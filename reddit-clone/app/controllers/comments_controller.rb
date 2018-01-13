@@ -1,6 +1,10 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
 
+  def index
+   @comments = Comment.all
+  end
+
   # POST /comments
   # POST /comments.json
   def create
@@ -24,7 +28,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+      format.html { redirect_to request.referrer, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

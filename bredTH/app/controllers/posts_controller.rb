@@ -4,6 +4,7 @@ class PostsController < ApplicationController
   except: [:index, :show]
 
   def index
+    # location = request.remote_ip
     @posts = Post.all
   end
 

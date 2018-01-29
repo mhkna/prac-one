@@ -1,11 +1,16 @@
 class PostsController < ApplicationController
-
   http_basic_authenticate_with name: "mk", password: "secret",
   except: [:index, :show]
 
   def index
-    # location = request.remote_ip
-    @posts = Post.all
+    user_ip = request.remote_ip
+    if user_ip == "127.0.0.1"
+      @user_coords = [41.925127, -87.655331]
+    else
+      @user_coords = Geocoder.coordinates(user_ip)
+    end
+    #coords for library should be users
+    @posts = Post.near(@user_coords, 5).where(created_at: (Time.now - 1.hour)..Time.now).order(created_at: :desc)
   end
 
   def show
